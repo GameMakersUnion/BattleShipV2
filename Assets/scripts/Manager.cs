@@ -8,7 +8,7 @@ public class Manager : MonoBehaviour {
 
   public GameObject HullSpawner;
   public GameObject BlockSpawner;
-  public GameObject Navigator;
+  public Navigator navigator;
 
 
 
@@ -34,18 +34,20 @@ public class Manager : MonoBehaviour {
     }
   }
 
-  public void AddBlock(GameObject BlockPrefab, Vector2 WorldPos, Transform parent) {
+  public void AddBlock(GameObject SpawnPrefab, Vector2 WorldPos, Transform parent) {
     var pt = new Point(WorldPos);
     if (pt.x == 0 && pt.y == 0) return;
 
-    var go = Instantiate(BlockPrefab);
+    var go = Instantiate(SpawnPrefab);
     go.transform.parent = parent;
     go.transform.position = WorldPos;
 
     if (ship.ContainsKey(pt)) {
-      Destroy(ship[pt]);
+			navigator.EquipmentList.Remove(ship[pt].GetComponent<Equipment>());
+			Destroy(ship[pt]);
     }
     ship[pt] = go;
+		navigator.EquipmentList.Add(go.GetComponent<Equipment>());
     
   }
 
@@ -53,6 +55,7 @@ public class Manager : MonoBehaviour {
     var pt = new Point(worldPos);
     if (pt.x == 0 && pt.y == 0) return;
     if (ship.ContainsKey(pt)) {
+			navigator.EquipmentList.Remove(ship[pt].GetComponent<Equipment>());
       Destroy(ship[pt]);
       ship.Remove(pt);
     }
@@ -80,18 +83,18 @@ public class Manager : MonoBehaviour {
 	  if (Input.GetKeyDown(KeyCode.H)) {
 	    HullSpawner.SetActive(true);
       BlockSpawner.SetActive(false);
-      Navigator.SetActive(false);
+			navigator.gameObject.SetActive(false);
 	  } else if (Input.GetKeyDown(KeyCode.B)) {
 
       HullSpawner.SetActive(false);
       BlockSpawner.SetActive(true);
-      Navigator.SetActive(false);
+			navigator.gameObject.SetActive(false);
     }
     else if (Input.GetKeyDown(KeyCode.N)) {
 
       HullSpawner.SetActive(false);
       BlockSpawner.SetActive(false);
-      Navigator.SetActive(true);
+			navigator.gameObject.SetActive(true);
     }
 	}
 }

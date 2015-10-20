@@ -1,12 +1,15 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 
 public class Navigator : MonoBehaviour {
 	public GameObject ship;
 	public float shipthrust = 1;
 	public float shipmoment = 1;
+	public float powerunit = 1;
 	public float shipmass = 1;
 	private Rigidbody2D shiprigidbody;
+    public List <Equipment> EquipmentList = new List <Equipment>();
 	//private float acceleratetime = 1;
 	//private int gyrocount;
 	
@@ -16,9 +19,17 @@ public class Navigator : MonoBehaviour {
 		shiprigidbody = ship.GetComponent<Rigidbody2D> ();
 
 		// this is the place holder values for equipment effects on ship class
-		shipthrust = 6;
-		shipmoment = 6;
+		//shipthrust = 6;
+		//shipmoment = 6;
 		shipmass = 26;
+		//int counter = 0;
+
+
+		//shipthrust += counter;
+
+		//counter = 0;
+
+
 
 		shiprigidbody.mass = shipmass;
 
@@ -30,7 +41,25 @@ public class Navigator : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-		
+		shipthrust = 1;
+		shipmoment = 1;
+		shipmass = 1;
+		foreach ( Equipment e in EquipmentList) {
+			
+			//print (e);
+
+			if (e is Thruster){
+				shipthrust ++;
+			}
+
+			if (e is Gyro){
+				shipmoment ++;
+			}
+			if (e is PowerSource){
+				powerunit ++;
+			}
+		}
+
 		float moverotation = Input.GetAxis ("Horizontal");
 		float moveforward = Input.GetAxis ("Vertical");
 		//float angularmomentum
@@ -51,8 +80,8 @@ public class Navigator : MonoBehaviour {
 		}
 
 
-		print (ship.transform.localEulerAngles);
-		print (shiprigidbody.angularVelocity);
+		//print (ship.transform.localEulerAngles);
+		//print (shiprigidbody.angularVelocity);
 		//print (ship.transform.up * shipthrust * moveforward + 100 * shipthrust);
 
 		if (moveforward != 0) {
