@@ -51,6 +51,13 @@ public class Manager : MonoBehaviour {
     
   }
 
+  public Equipment GetBlock(Vector2 WorldPos) {
+    var pt = new Point(WorldPos);
+    if (ship.ContainsKey(pt))
+      return ship[pt].GetComponent<Equipment>();
+    return null;
+  }
+
   public void RemoveBlock(Vector2 worldPos) {
     var pt = new Point(worldPos);
     if (pt.x == 0 && pt.y == 0) return;
