@@ -21,7 +21,7 @@ public class BlockSpawner : MonoBehaviour {
     var worldClick = Camera.main.ScreenToWorldPoint(Input.mousePosition); //Convert the screen coordinates to World
     var hit = Physics2D.OverlapPoint(worldClick, LayerMask.GetMask("Hull"));
     if (!hit || spawnPrefab == null) return;
-    Manager.instance.AddBlock(spawnPrefab, hit.transform.position, hit.transform);
+    Manager.instance.ship.AddBlock(spawnPrefab, hit.transform.position, hit.transform);
 
   }
 

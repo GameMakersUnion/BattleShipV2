@@ -1,4 +1,4 @@
-﻿using UnityEngine;
+using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
 
@@ -14,10 +14,10 @@ public class PowerEditor : MonoBehaviour {
 
   void OnEnable() {
     sources = new HashSet<PowerSource>();
-    foreach (var Eq in Manager.instance.ship.Values) {
-      var p = Eq.GetComponent<PowerSource>();
-      if (p != null) {
-        sources.Add(p);
+    foreach (var p in Manager.instance.ship.EquipmentDict.Values) {
+      if (p is PowerSource) {
+				PowerSource pp = (PowerSource)p;
+        sources.Add(pp);
       }
     }
 
@@ -49,7 +49,7 @@ public class PowerEditor : MonoBehaviour {
       if (Input.GetMouseButtonDown(0))
       {
         var worldClick = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-        Equipment q = Manager.instance.GetBlock(worldClick);
+        Equipment q = Manager.instance.ship.GetBlock(worldClick);
         if (q is PowerSource) {
           start = (PowerSource)q;
         }
@@ -57,7 +57,7 @@ public class PowerEditor : MonoBehaviour {
     if (start !=  null && Input.GetMouseButtonUp(0))
     {
       var worldClick = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-      Equipment q = Manager.instance.GetBlock(worldClick);
+      Equipment q = Manager.instance.ship.GetBlock(worldClick);
       if (!(q is PowerSource)) {
         start.ConnectedEquipments.Add(q);
         MakeLineRenderer(start, q);

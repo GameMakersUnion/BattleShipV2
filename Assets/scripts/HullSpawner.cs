@@ -5,7 +5,7 @@ using System.Linq;
 
 public class HullSpawner : MonoBehaviour {
   public GameObject hullPrefab;
-  public GameObject shipHull;
+  //public GameObject shipHull;
   public GameObject grid;
   private static readonly List<Vector3> Dirs = new List<Vector3>() {
     new Vector3(1, 0),
@@ -26,12 +26,11 @@ public class HullSpawner : MonoBehaviour {
     if (!col) return;
     if (col.gameObject == grid) { //check if we hit the grid
       if (!HasAdjecent(worldClick)) return;
-      var newHull = Instantiate(hullPrefab);
-      newHull.transform.position = new Vector2(Mathf.Floor(worldClick.x) + .5f, Mathf.Floor(worldClick.y) + .5f);
-      newHull.transform.parent = shipHull.transform;
+			Manager.instance.ship.AddHull(hullPrefab, worldClick);
     }
-    else if (col.tag == "hull" && col.gameObject != shipHull) {
-      if (!IsEssential(col)) Destroy(col.gameObject);
+		else if (col.tag == "hull" && col.gameObject.name != "MainHull") {
+      if (!IsEssential(col)) 
+				Destroy(col.gameObject);
     }
   }
 
@@ -41,7 +40,7 @@ public class HullSpawner : MonoBehaviour {
 
   private bool IsEssential(Collider2D col) {
     var worldpos = col.transform.position;
-    if (col.gameObject == shipHull) return true;
+    if (col.gameObject.name == "MainHull") return true;
     var all = Dirs.All(d => !GetBlock(worldpos + d) || ConnectedToMain(worldpos + d, new HashSet<Collider2D>() { col }) );
     return !all;
   }
@@ -50,7 +49,7 @@ public class HullSpawner : MonoBehaviour {
     if (visited == null) visited = new HashSet<Collider2D>();
     var hit = Physics2D.OverlapPoint(worldClick, LayerMask.GetMask("Hull"));
     if (!hit || hit.tag != "hull" || visited.Contains(hit)) return false;
-    if (hit.gameObject == shipHull) return true;
+		if (hit.gameObject.name == "MainHull") return true;
     visited.Add((hit));
     return Dirs.Any(d => ConnectedToMain(worldClick + d, visited));
   }
