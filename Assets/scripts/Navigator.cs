@@ -58,6 +58,7 @@ public class Navigator : MonoBehaviour {
 			if (h is HeavyHull)
 			{
 				shipmass = shipmass + 2;
+				//more hit points?
 			}
 			if (h is NormalHull)
 			{
@@ -66,6 +67,7 @@ public class Navigator : MonoBehaviour {
 			if (h is LightHull)
 			{
 				shipmass = shipmass + (float)0.5;
+				//less hit points?
 			}
 		}
 
@@ -74,30 +76,31 @@ public class Navigator : MonoBehaviour {
 		//float angularmomentum
 
 		if (moverotation != 0) {
-			shiprigidbody.angularVelocity += -moverotation * shipmoment / shipmass * 20;
+			shiprigidbody.angularVelocity = (int)(-moverotation * shipmoment / shipmass * 400);
 
 			//shiprigidbody.AddTorque(ship.transform.up * moment * -moverotation, ForceMode2D.Force);
-			ship.transform.localEulerAngles += new Vector3 (0, 0, (-moverotation * shipmoment) / (shipmass * shipmass));
+			ship.transform.localEulerAngles += new Vector3 (0, 0, (-moverotation * shipmoment)*10 / (shipmass * shipmass));
 		}
 
+		//ships' auto angularvelocity reduction
 		if ( shiprigidbody.angularVelocity < 0) {
-			shiprigidbody.angularVelocity += shipmoment / shipmass * 10;
+			shiprigidbody.angularVelocity += shipmoment / shipmass;
 		}
 
 		if ( shiprigidbody.angularVelocity > 0) {
-			shiprigidbody.angularVelocity -= shipmoment / shipmass * 10;
+			shiprigidbody.angularVelocity -= shipmoment / shipmass;
 		}
 
 
 		//print (ship.transform.localEulerAngles);
-		//print (shiprigidbody.angularVelocity);
+		print (shiprigidbody.angularVelocity);
 		//print (ship.transform.up * shipthrust * moveforward + 100 * shipthrust);
 
 		if (moveforward != 0) {
-			shiprigidbody.AddForce(ship.transform.up * shipthrust * moveforward * 1);
+			shiprigidbody.AddForce(ship.transform.up * shipthrust * moveforward * 5);
 
 		}
-
+			
 		
 		/*if (Input.GetKeyDown (KeyCode.W)) {
 			shiprigidbody.AddForce ( new Vector2 (0 ,thrust*acceleratetime));
