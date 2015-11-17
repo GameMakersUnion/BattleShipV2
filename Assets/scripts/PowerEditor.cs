@@ -4,6 +4,7 @@ using System.Collections.Generic;
 
 public class PowerEditor : MonoBehaviour {
 
+	public List<GameObject> powerLines;
   public PowerSource start;
   public HashSet<PowerSource> sources;
   public Material lineMaterial;
@@ -27,10 +28,16 @@ public class PowerEditor : MonoBehaviour {
       }
     }
   }
-  
+	void OnDisable (){
+		foreach (GameObject go in powerLines) {
+			Destroy (go);
+		}
+		powerLines = new List<GameObject>();
+	}
 
   private void MakeLineRenderer(PowerSource powerSource, Equipment connectedEquipment) {
     GameObject g = new GameObject("PowerLine");
+		powerLines.Add (g);
     g.transform.parent = this.transform;
     LineRenderer r = g.AddComponent<LineRenderer>();
     r.useWorldSpace = false;
@@ -44,7 +51,7 @@ public class PowerEditor : MonoBehaviour {
   }
 
   // Update is called once per frame
-	void Update () {
+	public void Update () {
 
       if (Input.GetMouseButtonDown(0))
       {
@@ -58,7 +65,7 @@ public class PowerEditor : MonoBehaviour {
     {
       var worldClick = Camera.main.ScreenToWorldPoint(Input.mousePosition);
       Equipment q = Manager.instance.ship.GetBlock(worldClick);
-      if (!(q is PowerSource)) {
+      if (!(q is PowerSource)&& (q != null)) {
         start.ConnectedEquipments.Add(q);
         MakeLineRenderer(start, q);
       }

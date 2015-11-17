@@ -7,9 +7,10 @@ using System.ComponentModel;
 public class Manager : MonoBehaviour
 {
 
-	public GameObject HullSpawner;
-	public GameObject BlockSpawner;
+	public HullSpawner hullSpawner;
+	public BlockSpawner blockSpawner;
 	public Navigator navigator;
+	public PowerEditor powerEditor;
 	public Ship ship;
 	private static Manager _instance;
 
@@ -47,19 +48,28 @@ public class Manager : MonoBehaviour
 	void Update ()
 	{
 		if (Input.GetKeyDown (KeyCode.H)) {
-			HullSpawner.SetActive (true);
-			BlockSpawner.SetActive (false);
+			hullSpawner.gameObject.SetActive (true);
+			blockSpawner.gameObject.SetActive (false);
 			navigator.gameObject.SetActive (false);
+			powerEditor.gameObject.SetActive (false);
 		} else if (Input.GetKeyDown (KeyCode.B)) {
 
-			HullSpawner.SetActive (false);
-			BlockSpawner.SetActive (true);
+			hullSpawner.gameObject.SetActive (false);
+			blockSpawner.gameObject.SetActive (true);
 			navigator.gameObject.SetActive (false);
+			powerEditor.gameObject.SetActive (false);
 		} else if (Input.GetKeyDown (KeyCode.N)) {
 
-			HullSpawner.SetActive (false);
-			BlockSpawner.SetActive (false);
+			hullSpawner.gameObject.SetActive (false);
+			blockSpawner.gameObject.SetActive (false);
 			navigator.gameObject.SetActive (true);
+			powerEditor.gameObject.SetActive (false);
+		} else if (Input.GetKeyDown (KeyCode.P)) {
+		
+			hullSpawner.gameObject.SetActive (false);
+			blockSpawner.gameObject.SetActive (false);
+			navigator.gameObject.SetActive (false);
+			powerEditor.gameObject.SetActive (true);
 		}
 	}
 }

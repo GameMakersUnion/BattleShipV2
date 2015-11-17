@@ -23,6 +23,8 @@ public class PowerSource : Equipment {
 	
 	// Update is called once per frame
 	void Update () {
-	  
+		foreach (Equipment e in ConnectedEquipments){
+			e.Powered = true;
+		}
 	}
 }
